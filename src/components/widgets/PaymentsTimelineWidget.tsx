@@ -6,6 +6,7 @@ import {
   TimelineConnector,
   TimelineContent,
   TimelineDot,
+  TimelineOppositeContent,
 } from "@mui/lab";
 import { Typography, CircularProgress, Box } from "@mui/material";
 import axios from "axios";
@@ -13,7 +14,7 @@ import axios from "axios";
 const PaymentsTimeline = () => {
   interface Payment {
     id: string;
-    description: string;
+    type: string;
     amount: number;
     date: string;
   }
@@ -55,19 +56,27 @@ const PaymentsTimeline = () => {
   }
 
   return (
-    <Timeline>
+    <Timeline sx={{height:300,overflow:"auto"}}>
       {payments.map((payment) => (
         <TimelineItem key={payment.id}>
+          <TimelineOppositeContent sx={{ flex: 0.2 }}>
+              <Typography variant="caption" color="textSecondary">
+                {new Date(payment.date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </Typography>
+            </TimelineOppositeContent>
           <TimelineSeparator>
             <TimelineDot color="primary" />
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <Typography variant="body1">
-              {payment.description} - ₹{" "}{payment.amount}
+              ₹{" "}{payment.amount}
             </Typography>
             <Typography variant="caption" color="textSecondary">
-              {new Date(payment.date).toLocaleDateString()}
+            {payment.type} 
             </Typography>
           </TimelineContent>
         </TimelineItem>
